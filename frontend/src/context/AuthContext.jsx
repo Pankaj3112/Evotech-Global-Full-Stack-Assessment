@@ -1,7 +1,10 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const AuthContext = createContext();
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -19,50 +22,46 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (username, password) => {
-    try {
-      const response = await fetch("yourServerUrl/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+	try {
+	  const { data } = await axios.post(`${serverUrl}/admin/login`, {
+		username,
+		password,
+	  });
 
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("token", data.token);
-        setUser(jwtDecode(data.token));
-      } else {
-        // Handle login failure
-      }
-    } catch (error) {
-      // Handle network or other errors
-    }
+	  if(data.success){
+		localStorage.setItem("token", data.token);
+		setUser(jwtDecode(data.token));
+		toast.success("Logged in successfully");
+	  }else{
+		toast.error("Login failed");
+	  }
+	} catch (err) {
+	  toast.error(err.response.data.message);
+	}
   };
 
   const register = async (username, password) => {
     try {
-      const response = await fetch("yourServerUrl/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
+      const { data } = await axios.post(`${serverUrl}/admin/signup`, {
+        username,
+        password,
       });
 
-      if (response.ok) {
-        // Optionally, you may handle the successful registration
-      } else {
-        // Handle registration failure
-      }
-    } catch (error) {
-      // Handle network or other errors
+      if(data.success){
+		toast.success("Registered successfully");
+	  }else{
+		toast.error("Registration failed");
+	  }
+
+    } catch (err) {
+	  toast.error(err.response.data.message);
     }
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
+	toast.success("Logged out successfully");
   };
 
   return (

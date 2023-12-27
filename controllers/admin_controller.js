@@ -5,11 +5,16 @@ require('dotenv').config();
 
 module.exports.signUp = async (req, res) => {
 	const {username, password} = req.body;
+	
 	if(!username || !password) return res.status(400).json({success: false, message: 'Send username and password to sign up'});
 
 	try {
+		const alreadyExists = await Admin.findOne({username});
+		if(alreadyExists) throw new Error('Username already exists');
+
 		const admin = await Admin.create({username, password});
 		if(!admin) throw new Error('Something went wrong');
+		
 		res.status(200).json({success: true, message: 'Signed up successfully'});
 	} catch (error) {
 		res.status(500).json({success: false, message: error.message});

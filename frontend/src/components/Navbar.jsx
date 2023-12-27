@@ -1,38 +1,77 @@
 import React from "react";
-import { Github, Linkedin, LogIn, Mail } from "lucide-react";
-import { motion } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
-const transition = { duration: 1.5, ease: [0.6, 0.01, -0.05, 0.9], delay: 1 };
-
 const Navbar = () => {
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    window.location.reload();
+  };
+
   return (
-    <>
-      <div className="fixed w-[100vw] top-0 left-0 px-2 z-50">
-        <div className="flex justify-between p-3 px-4 m-auto max-w-2xl mt-3 rounded-full bg-white bg-opacity-10 backdrop-blur-lg">
-          <Link to={"/"}>
-            <div className="flex w-fit items-center">
-              <div className="w-6 h-6 bg-white rounded-full"></div>
-              <motion.div
-                initial={{ x: 0 }}
-                animate={{ x: [0, 100, 0] }}
-                transition={{ ...transition }}
-                className="w-6 h-6 bg-white rounded-full relative inline-block right-6 cursor-pointer"
-              ></motion.div>
-            </div>
+    <nav className="flex flex-col gap-2 sm:gap-0 sm:flex-row items-center justify-between bg-[#264653] p-3 py-2 sm:p-6 sm:py-4 min-w-fit fixed top-0 w-full">
+      <div className="flex items-center text-white mr-6">
+        <svg
+          className="fill-current h-8 w-8 mr-2"
+          width="54"
+          height="54"
+          viewBox="0 0 54 54"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z" />
+        </svg>
+        <span className="font-semibold text-xl min-w-max">Survey</span>
+      </div>
+
+      <div className="w-full text-white flex justify-between">
+        <div className="text-sm flex items-center">
+          <Link to="/" className="inline-block hover:text-[#F4A261] mr-4 ">
+            Home
           </Link>
 
-          <div className="flex gap-4">
+          {user && (
             <Link
-              to={"/admin-login"}
-              className="hover:scale-110 transition-all cursor-pointer"
+              to="/view-all"
+              className="inline-block hover:text-[#F4A261] mr-4"
             >
-              <LogIn strokeWidth={1.5} />
+              View Surveys
             </Link>
-          </div>
+          )}
+        </div>
+
+        <div className="flex gap-2 items-center">
+          {user ? (
+            <>
+              <p>{user.username}</p>
+              <button
+                className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-[#E76F51] hover:bg-white "
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/admin-login"
+                className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-[#E76F51] hover:bg-white"
+              >
+                Admin Login
+              </Link>
+
+              <Link
+                to="/admin-signup"
+                className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-[#E76F51] hover:bg-white"
+              >
+                Admin Register
+              </Link>
+            </>
+          )}
         </div>
       </div>
-    </>
+    </nav>
   );
 };
 
