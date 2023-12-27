@@ -19,6 +19,10 @@ Basic survey app using using Express and React. It uses a mongoDB database to st
 
 - **View Surveys:** Admins can view all the surveys submitted by users after logging in.
 
+### Notifications
+
+- **Success and Error Notifications:** Success and error notifications are displayed to the user after submitting the form, logging in, registering, etc.
+
 ## Prerequisites
 
 - Node.js and npm installed on your machine
