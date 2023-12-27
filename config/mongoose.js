@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const mongoURI = process.env.MONGODB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/Evotech'; //change in production
+const mongoURI = process.env.MONGODB_CONNECTION_STRING;
 
 //connect to database
-mongoose.connect('mongodb://127.0.0.1:27017/Evotech')
+mongoose.connect(mongoURI)
 .then(() => console.log('MongoDB Connected...'))
 .catch(err => console.log(err));
