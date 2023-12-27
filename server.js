@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 app.use("/survey", require("./routes/survey"));
 app.use("/admin", require("./routes/admin"));
 
+ 
 app.listen(port, function (err) {
   if (err) {
     console.log(`Error in running the server: ${err}`);
