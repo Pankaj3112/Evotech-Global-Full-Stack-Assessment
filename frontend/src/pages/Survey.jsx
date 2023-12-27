@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import zod from "zod";
 import axios from "axios";
-import { set } from "mongoose";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
