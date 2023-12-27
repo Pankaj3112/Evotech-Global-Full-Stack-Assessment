@@ -5,10 +5,12 @@ import toast from "react-hot-toast";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+	setLoading(true);
 
 	if(!username || !password){
 		toast.error("Username and password are required!");
@@ -18,6 +20,7 @@ function Login() {
     await login(username, password);
     setUsername("");
     setPassword("");
+	setLoading(false);
   };
 
   return (
@@ -79,7 +82,8 @@ function Login() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-[#2A9D8F] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#264653] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
-              >
+				disabled={loading}
+			 >
                 Sign in
               </button>
             </div>
