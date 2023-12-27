@@ -67,6 +67,10 @@ Basic survey app using using Express and React. It uses a mongoDB database to st
 
 #### Login
 
+- **Demo Credentials:**
+	- `username`: admin
+	- `password`: 123456
+
 - **URL:** `/admin/login`
 - **Method:** `POST`
 - **Body Params:**
