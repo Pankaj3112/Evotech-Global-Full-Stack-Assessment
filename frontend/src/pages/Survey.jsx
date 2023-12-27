@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import zod from "zod";
 import axios from "axios";
+import { set } from "mongoose";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -16,6 +17,8 @@ const Survey = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const emailSchema = zod.string().email().min(5).max(50);
   const phoneSchema = zod.string().min(10).max(13);
 
@@ -29,6 +32,7 @@ const Survey = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+	setLoading(true);
 
     if (formData.name === "" || formData.message === "") {
       toast.error("Name and message are required!");
@@ -72,6 +76,8 @@ const Survey = () => {
     } catch (err) {
       toast.error("Form submission failed!");
     }
+
+	setLoading(false);
   };
 
   return (
@@ -113,6 +119,7 @@ const Survey = () => {
             <button
               type="submit"
               className="bg-[#2A9D8F] text-white py-2 px-4 rounded-md hover:bg-[#264653]"
+			  disabled={loading}
             >
               Submit
             </button>
